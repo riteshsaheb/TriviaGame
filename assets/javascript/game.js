@@ -37,39 +37,45 @@ $(document).ready(function(){
     var time = 30;
     var clockRunning = false;
     var intervalId;
+    $("#display").text(`Time Remaining : ${time} Seconds`).hide();
     function resetGame(){
+        $("#display").empty();
         var rightAns = 0;
         var wrongAns = 0;
         var notAns = 0;
         var queCount = 0;
-        var time = 31;
+        var time = 30;
+        // var newDiv = $("<div class = 'restart'>");
+        // newDiv.append(`<button data-value = 'startagain'> Start Game </button>`);
+        // $("#display").append(newDiv);
+        run();
+          
     };
     function run() {
         if(!clockRunning){
         clearInterval(intervalId);
         intervalId = setInterval(decrement, 1000);
-        // document.querySelector
-        // que.attr("id = '#quenum'");
+        displayQuestion();
         clockRunning = true;
         }
       };
     function decrement() {
-        $("#display").text(time);
+        $("#display").empty();
+        
         time--;
         // Show the time in display  tag.
-        //var converted = timeConverter(time);
-        //console.log(converted);
-        //  Once number hits zero...
+        //  after 30 seconds hits zero...
         if (time === 0) {
             time = 30;
-          //  ...run the stop function.
-          stop();
+          stop(); //  ...run the stop function.
           queCount++;
           displayQuestion();
           run();
           //  Alert the user that time is up.
           //alert("Time Up!");
-        }
+        };
+        $("#display").text(`Time Remaining : ${time} Seconds`);
+        
       };
     function stop() {
         clockRunning = false;
@@ -79,69 +85,64 @@ $(document).ready(function(){
     //   function Msg1(){
     //     document.getElementById('#ansbutton1').innerHTML = quizQuestions[queCount].a1;
     //   }
-
+    
+    
       function displayQuestion(){
         if(queCount <= quizQuestions.length){
-          document.querySelector("#quenumber").innerHTML = quizQuestions[queCount].que;
-          document.querySelector("#ansbutton1").innerHTML = quizQuestions[queCount].a1;
-          //$("#ansbutton1").attr("data-buttonvalue", quizQuestions[i].a1);
-          document.querySelector("#ansbutton2").innerHTML = quizQuestions[queCount].a2;
-          document.querySelector("#ansbutton3").innerHTML = quizQuestions[queCount].a3;
-          document.querySelector("#ansbutton4").innerHTML = quizQuestions[queCount].a4;
-          
+          $("#quenumber").empty();
+          // $("#display").text(`Time Remaining : ${time} Seconds`)
+          // document.querySelector("#quenumber").innerHTML = quizQuestions[queCount].que;
+          // document.querySelector("#ansbutton1").innerHTML = quizQuestions[queCount].a1;
+          // $("#ansbutton1").attr("data-answer", quizQuestions[i].a1);
+          // document.querySelector("#ansbutton2").innerHTML = quizQuestions[queCount].a2;
+          // $("#ansbutton2").attr("data-answer", quizQuestions[i].a2);
+          // document.querySelector("#ansbutton3").innerHTML = quizQuestions[queCount].a3;
+          // $("#ansbutton3").attr("data-answer", quizQuestions[i].a3);
+          // document.querySelector("#ansbutton4").innerHTML = quizQuestions[queCount].a4;
+          // $("#ansbutton4").attr("data-answer", quizQuestions[i].a4);
+          var newDiv = $("<div class = 'question'>");
+          newDiv.append(`<p> ${quizQuestions[queCount].que}</p>`);
+          newDiv.append(`<button data-value = '${quizQuestions[queCount].a1}'> ${quizQuestions[queCount].a1} </button>`);
+          newDiv.append(`<br>`);
+          newDiv.append(`<button data-value = '${quizQuestions[queCount].a2}'> ${quizQuestions[queCount].a2} </button>`);
+          newDiv.append(`<br>`);
+          newDiv.append(`<button data-value = '${quizQuestions[queCount].a3}'> ${quizQuestions[queCount].a3} </button>`);
+          newDiv.append(`<br>`);
+          newDiv.append(`<button data-value = '${quizQuestions[queCount].a4}'> ${quizQuestions[queCount].a4} </button>`);
+          $("#quenumber").append(newDiv);
+
         }else{
           document.querySelector("#quenumber").innerHTML = "Game Over";
           //document.querySelector("#score").innerHTML = "Final Score " + score + " out of " + questions.length;
         }
       };
 
-      //event.preventDefault();
-    //   function displayAns(){
-    //     if(queCount <= quizQuestions.length){
-    //         for (var i = 0; i < 4; i++) {
 
-    //             // For each iteration, we will create an imageCrystal
-    //             var button = $("<button>");
-    //             // First each crystal will be given the class ".crystal-image".
-    //             // This will allow the CSS to take effect.
-    //             button.addClass("button-image");
-    //             // Each imageCrystal will be given a data attribute called data-crystalValue.
-    //             // This data attribute will be set equal to the array value.
-    //             button.attr("data-buttonvalue", quizQuestions[i].a1);
-                
-    //             button.attr("data-buttonvalue", quizQuestions[i].a2);
-                
-    //             button.attr("data-buttonvalue", quizQuestions[i].a3);
-                
-    //             button.attr("data-buttonvalue", quizQuestions[i].a4);
-    //             $('button').text(data-buttonvalue);
-
-    //             // Lastly, each crystal image (with all it classes and attributes) will get added to the page.
-    //             $("#queAns").append(button);
-    //           }
-    //     }else{
-    //       document.querySelector("#quenumber").innerHTML = "Game Over";
-    //       //document.querySelector("#score").innerHTML = "Final Score " + score + " out of " + questions.length;
-    //     }
-    //   };
-
-$("#startgame").on("click", function(){
+$(document).on("click","#startgame",function(){
         $(this).hide();
-        $("#ansbutton1").show();
-        $("#ansbutton2").show();
-        $("#ansbutton3").show();
-        $("#ansbutton4").show();
+        $("#display").text(`Time Remaining : ${time} Seconds`).show();
+        // $("#ansbutton1").show();
+        // $("#ansbutton2").show();
+        // $("#ansbutton3").show();
+        // $("#ansbutton4").show();
         console.log("clicked");
         run();
         console.log("run");
-        displayQuestion();
+        //displayQuestion();
         //displayAns();
         console.log("displayQuestion");
         $(".button").on("click", function(){
 
-        });
+        });      
 
 });
 
+if(queCount === quizQuestions.length){
+  displayQuestion().hide();
+  $("#display").empty();
+  var newDiv = $("<div class = 'restart'>");
+  newDiv.append(`<button data-value = 'startagain'> Start Game </button>`);
+  $("#display").append(newDiv);
+};
 
 });
